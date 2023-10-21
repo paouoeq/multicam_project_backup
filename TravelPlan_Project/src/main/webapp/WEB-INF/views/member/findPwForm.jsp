@@ -10,7 +10,7 @@
 	* { box-sizing:border-box; }
 	a { text-decoration: none; }
 	form {
-		width:400px;
+		width:600px;
 		height:500px;
 		display : flex;
 		flex-direction: column;
@@ -42,7 +42,7 @@
 	}
 	 #title {
 		font-size : 50px;
-		margin: 40px 0 30px 0;
+		margin: 60px 0 30px 0;
 	}
 	 #msg {
 		height: 30px;
@@ -55,14 +55,15 @@
 		height: 30px;
 		text-align:center;
 		font-size:16px;
-		margin-bottom: 20px;
+		margin-bottom: 30px;
+		color: gray;
 	}
 </style>
 
-<form action="findPw" method="post" name="frm" onsubmit="return formCheck(this);">
+<form action="findPwSendMail" method="post" name="frm" onsubmit="return formCheck(this);">
 	<h3 id="title">비밀번호 찾기</h3>
 	<div id="info">
-		가입시 입력한 이메일 주소가 같아야, 인증메일을 받을 수 있습니다.
+		가입 시 입력한 이메일 주소가 같아야<br>인증 메일을 받을 수 있습니다.
 	</div>
 	<div id="msg">
 		<c:if test="${not empty param.msg}">
@@ -74,6 +75,7 @@
 	<button>인증메일 받기</button>
 	
 	<script>
+		
 		function formCheck(frm) {
 			let msg ='';
 			if(frm.userID.value.length==0) {
@@ -87,7 +89,7 @@
 			return true;
 		}
 		function setMessage(msg, element){
-			document.getElementById("msg").innerHTML = ` ${'${msg}'}`;
+			document.getElementById("msg").innerHTML = ` <i class='fa fa-exclamation-circle'> ${'${msg}'}`;
 			if(element) {
 			    element.select();
 			}
