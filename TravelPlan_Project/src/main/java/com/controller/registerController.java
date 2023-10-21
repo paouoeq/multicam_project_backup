@@ -12,32 +12,42 @@ import com.service.MemberService;
 
 @Controller
 public class registerController {
-
+	
 	@Autowired
 	MemberService service;
 	
+	// 신규 회원 입력화면
 	@GetMapping("/memberUI")
+//	@RequestMapping(value="/memberUI", method= {RequestMethod.GET, RequestMethod.POST})
 	public String memberUI() {
 		return "registerForm";
 	}
 	
+	// 신규 회원 등록
 	@PostMapping("/register")
-	public String register(MemberDTO dto) {
-		int n = service.register(dto);
+	public String register(MemberDTO dto) throws Exception {
+		service.register(dto);
 		return "redirect:loginForm";
 	}
 	
+	// 회원가입시 이메일 인증
+	@GetMapping("/registerEmail")
+	public String emailConfirm(MemberDTO dto) throws Exception {
+		service.updateMailAuth(dto);
+		return "member/emailAuthSuccess";
+	}
+	
 	// 아이디 중복체크 (ajax 연동을 위해 의존성 추가 필요)
-	@GetMapping("/memberIdCheck")
+	@GetMapping(value = "/memberIdCheck", produces = "text/plain;charset=utf-8")
 	@ResponseBody
 	public String idCheck(@RequestParam("userID")
 							String userID) {
 		MemberDTO dto = service.idCheck(userID);
-		String mesg = "아이디 사용 가능";
+		String msg = "사용 가능한 아이디입니다.";
 		if(dto != null) {
-			mesg = "아이디 중복";
+			msg = "중복된 아이디입니다.";
 		}
-		return mesg;
+		return msg;
 	}
 	
 }
