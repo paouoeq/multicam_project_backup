@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>아이디찾기</title>
+<title>여담: "아이디찾기</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" />
 <style>
 	* { box-sizing:border-box; }
@@ -30,7 +30,7 @@
 		padding: 0 10px;
 		margin-bottom: 10px;
 	}
-	 button {
+	 #sbtn {
 		background-color: rgb(53,99,233);
 		color : white;
 		width:300px;
@@ -69,7 +69,7 @@
 	<input type="text" name="name" id="name" placeholder="이름을 2자 이상 입력해주세요. " autofocus>
 	<input type="text" name="email" id="email" placeholder="이메일 형식으로 입력해주세요.">
 	<input type="text" name="phone" id="phone" placeholder="전화번호를 - 없이 입력하세요.">
-	<button>아이디 찾기</button>
+	<button id="sbtn">아이디 찾기</button>
 	
 </form>
 <script>

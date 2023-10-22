@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>비밀번호 찾기</title>
+<title>여담: 비밀번호 찾기</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" />
 <style>
 	* { box-sizing:border-box; }
@@ -30,7 +30,7 @@
 		padding: 0 10px;
 		margin-bottom: 10px;
 	}
-	 button {
+	 #sbtn {
 		background-color: rgb(53,99,233);
 		color : white;
 		width:300px;
@@ -68,7 +68,7 @@
 	<div id="msg"></div>
 	<input type="text" name="userID" id="userID" placeholder="아이디를 입력해주세요.">
 	<input type="text" name="email" id="email" placeholder="이메일 형식으로 입력해주세요.">
-	<button>인증메일 받기</button>
+	<button id="sbtn">인증메일 받기</button>
 </form>
 <script>
 $(document).ready(function(){
