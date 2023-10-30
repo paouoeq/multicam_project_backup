@@ -189,6 +189,24 @@
       </ul>
 
     </div>
+    <!-- DAYS box-수정전 -->
+<!-- 		<div class="plan-daysbox"> -->
+<!-- 			<div class="plan-daysboxtitle">일정</div> -->
+ 			<!-- 사용자 입력을 받은 만큼 반복문 사용  (days) -->
+<!-- 			<div class="select-job-items1"> -->
+<!-- 				<div style="text-align: -webkit-center;"> -->
+<!-- 					<table id="myTable" class="table"> -->
+<!-- 						<thead> -->
+<!-- 						</thead> -->
+<!-- 						<tbody id="tbody"></tbody> -->
+<!-- 					</table> -->
+<!-- 				</div> -->
+<!-- 			</div> -->
+	
+<!-- 			<input type="hidden" id="day_hidden" value="0"> -->
+	
+<!-- 		</div> -->
+	<!-- DAYS box 끝 -->
 
     <div class="b-example-divider b-example-vr"></div>
 
