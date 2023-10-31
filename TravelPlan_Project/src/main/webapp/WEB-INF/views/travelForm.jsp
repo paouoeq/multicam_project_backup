@@ -176,7 +176,7 @@
 		        </div>
 		        <div class="row">
 		          <form onsubmit="searchPlaces(); return false;">
-			          <input type="text" id="keyword" class="col-7 m-1" value="" style="font-size: small;" placeholder="검색어를 입력하세요.">
+			          <input type="text" id="keyword" class="col-7 m-1" value="제주 맛집" style="font-size: small;" placeholder="검색어를 입력하세요.">
 			          <button type="submit" id="searchBtn" class="col-3 m-1 btn btn-light border-dark">검색</button>
 		          </form>
 		        </div>
@@ -202,26 +202,6 @@
     </div>
 <!-- 지도 끝 -->
 
-<!-- 숙박 클릭 시 리스트 -->
-	<!-- (c:forEach 사용한 검색결과 -->
-	<div>
-		<ul class="plan-searchbox-ul">
-			<c:forEach var="hotelList" items="${hotelList }">
-				<li class="item" onmouseover="this.style.background='#F1F1F1'"
-					onmouseout="this.style.background=''"><img
-					src="${hotelList.image2 }" class="tourListImg" width="110px"
-					height="86px">
-					<div class="info">
-						<h5 class="item-name">${hotelList.title }</h5>
-						<span class="item-addr">${hotelList.addr1 }</span>
-					</div> <!-- 일정 추가하기 버튼 -->
-					<div class="col-10 mb-1 small">
-						<button class="btn-primary">추가</button>
-					</div></li>
-			</c:forEach>
-		</ul>
-	</div>
-<!-- 숙박 클릭 시 리스트 끝 -->
   </main>
 </div>
 <!-- content 끝 -->

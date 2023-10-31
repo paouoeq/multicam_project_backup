@@ -1,5 +1,21 @@
+//클릭했을 때 DAY 버튼 활성화
+var currentBtn; // 활성화된 버튼 담을 변수
+$(document).on("click", ".list-bttn", function(){
+	if(currentBtn) { // 활성화된 버튼 유무 확인
+		currentBtn.classList.remove('btn-active'); // 활성화된 버튼이 있다면 비활성화
+	}
+	this.classList.add('btn-active'); // 현재 버튼 활성화
+//	console.log("현재 버튼 id : "+this.id);
+	currentBtn = this; // 활성화된 버튼 변수에 담기
+});
+
 // 추가버튼
 $(document).on("click", ".addBtn", function(){
+	
+	if(!currentBtn) {
+		alert("여행 일정을 선택해주세요.");
+		return;
+	}
 	// 해당 버튼의 data-idx값 불러오기
 //	console.log(this.dataset.idx);
 	var idx = this.dataset.idx
@@ -39,9 +55,10 @@ $(document).on("click", ".addBtn", function(){
 });
 
 // 리스트 추가
+// 수정 : 버튼값 보내주기 위해 input hidden 추가 / day 버튼별 리스트 출력하기 위해 클래스 수정(scList추가) + dataset추가
 function getScheduleList(title, addr1) {
-
-	var inHtml ='<div class="list-group-item list-group-item-action py-3 lh-sm" aria-current="true">'+
+	var inHtml ='<div class="scList list-group-item list-group-item-action py-3 lh-sm" aria-current="true" data-value="'+currentBtn.id+'">'+
+					'<input type="hidden" value="'+currentBtn.id+'">' +
 					'<div class="d-flex w-100 align-items-center justify-content-between">' +
 					'  <strong class="mb-1">'+title+'</strong>' + 
 					'  <input type="text" class="time_text small" style="width: 45px;" placeholder="12:00">' +
@@ -57,3 +74,27 @@ function getScheduleList(title, addr1) {
 $(document).on("click", ".removeBtn", function(){
 	this.parentNode.remove(); // 해당 버튼의 부모 찾아서 삭제
 });
+
+// day에 맞는 상세 리스트 출력
+function day_filter(value) {
+	var value, target, item, i;
+
+	value = value;
+	item = document.getElementsByClassName("scList");
+
+//	console.log('value: '+value+' item :'+item.length);
+//	console.log('item.value : '+item[0].dataset.value);
+
+	for (i = 0; i < item.length; i++) {
+		target = item[i].dataset.value;
+//		console.log(item[i]);
+//		console.log(target);
+
+		if (target == value) {
+			item[i].style.display = "block";
+		} else {
+			item[i].style.display = "none";
+		}
+
+	}
+}
