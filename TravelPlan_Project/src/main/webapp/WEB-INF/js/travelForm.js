@@ -42,9 +42,67 @@ function call() {
 	}
 }//end call
 
+// ------------------------- 저장버튼 ------------------------- //
 function save() {
-	// 저장버튼 구현 
-}//end saveClick
+	var region = getRegion();
+	$("#areaCode").val(region);
+	// 아이디(타이틀)이 공백이라면 오류 출력
+	if($('#travelTitle').val()==''){
+		event.preventDefault();
+		alert("여행 제목을 채워주세요 :)");
+		$('#travelTitle').focus();
+	}
+	if($('#SDate').val() == '') {
+		event.preventDefault();
+		alert("여행 시작일을 입력해주세요.");
+		$('#SDate').focus();
+	}
+	if($('#EDate').val() == '') {
+		event.preventDefault();
+		alert("여행  종료일을 입력해주세요.");
+		$('#EDate').focus();
+	}
+	else{
+		$('#savePlan').submit();
+		// 저장버튼 -> 상세일정 데이터 넘어감
+		list = [];
+		for(var i=0; i<$('.scheduleList').children().length; i++) {
+//			console.log($('.currentBtn_hidden').eq(i).val());
+//			console.log($('.stitle').eq(i).text());
+//			console.log($('.time_text').eq(i).val());
+//			console.log($('.saddr1').eq(i).text());
+			list.push({"day_num":$('.currentBtn_hidden').eq(i).val().substr(6,1),
+					   "item":$('.stitle').eq(i).text(),
+					   "time_text":$('.time_text').eq(i).val(),
+					   "item_add":$('.saddr1').eq(i).text()})
+		}
+		console.log(JSON.stringify(list));
+		
+		$.ajax({
+	        // 요청코드
+	        type:"get",
+	        url:"saveScheduleData",
+	        data:{
+	        	scheduleList:JSON.stringify(list)
+	        },
+
+	        // 응답코드
+	        success:function(data, satatus, xhr) { 
+	        	console.log("성공");
+	        },
+	        error:function(xhr, status, error) {
+	            console.log("에러발생");
+	        }
+	    });
+		
+        
+	}
+	
+	
+	
+	
+}
+// -------------------------------------------------------- //
 
 // 일 수 만큼 버튼 생성
 function rowAdd() {
@@ -166,9 +224,10 @@ function dayDelete() {
 
 // 숙박 버튼
 function hotelBtnclick() {
-	var query = window.location.search;
-	var param = new URLSearchParams(query);
-	var region = param.get('region'); // 파라미터값
+	var region = getRegion();
+//	var query = window.location.search;
+//	var param = new URLSearchParams(query);
+//	var region = param.get('region'); // 파라미터값
 	
 	$.ajax({
         // 요청코드
@@ -191,9 +250,10 @@ function hotelBtnclick() {
 
 // 음식 버튼
 function foodBtnclick() {
-	var query = window.location.search;
-	var param = new URLSearchParams(query);
-	var region = param.get('region'); // 파라미터값
+	var region = getRegion();
+//	var query = window.location.search;
+//	var param = new URLSearchParams(query);
+//	var region = param.get('region'); // 파라미터값
 	
 	$.ajax({
 		// 요청코드
@@ -216,9 +276,10 @@ function foodBtnclick() {
 
 // 관광 버튼
 function sightseeingBtnclick() {
-	var query = window.location.search;
-	var param = new URLSearchParams(query);
-	var region = param.get('region'); // 파라미터값
+	var region = getRegion();
+//	var query = window.location.search;
+//	var param = new URLSearchParams(query);
+//	var region = param.get('region'); // 파라미터값
 	
 	$.ajax({
 		// 요청코드
@@ -317,4 +378,13 @@ function getSearchList(index, value) {
     el.className = 'item list-group-item py-3 lh-sm';
 
     return el;
+}
+
+// input에 region값 저장하기 위함
+function getRegion() {
+	var query = window.location.search;
+	var param = new URLSearchParams(query);
+	var region = param.get('region');
+	
+	return region;
 }

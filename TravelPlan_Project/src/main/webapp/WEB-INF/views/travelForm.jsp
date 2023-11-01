@@ -3,12 +3,15 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<!-- jquery CDN -->   
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="auto" style="height: 100%">
 <head>
 	<meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>여담: 일정 만들기</title>
+	
 	
 	<!-- kakao Map API -->
     <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=${client_id}&libraries=services"></script>
@@ -36,16 +39,15 @@
 	
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
 
-<!-- onclick 테스트 -->
+<!-- region 저장 -->
 <script>
-// function btnclick() {
-// 	alert("Hello World");
-// }
+
 </script>
 <!-- 테스트 끝 -->
 
 </head>
 <body style="height: 100%">
+<c:set var="areaCode" value="getRegion()"/>
 <!-- 비행기 아이콘 -->
 <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
   <symbol id="plain" viewBox="0 0 16 16"> <!-- 비행기 아이콘 -->
@@ -55,18 +57,20 @@
 <!-- header - tramvelForm -->
 <div class="travel-title">
 	<div class="row">
+		<form action="saveBtn" method="get">
 		<div class="div_title col-9">
 			<label class="title">여행 제목 : </label>
+			<input type="hidden" id="areaCode" name="areaCode" value="">
 			<input class="text" name="travelTitle" id="travelTitle">
 			<div class="calendar">
 				<label class="calendar_sdate">여행 시작일 : </label>
 				<input class="input-date" type="date" name="SDate" id="SDate" value="" min="<%= sdf.format(nowTime) %>">
 				<p class="wave">~</p>
 				<label class="calendar_edate">여행 종료일 : </label>
-				<input class="input-date" type="date" id="EDate" value="EDate" min="<%= sdf.format(nowTime) %>">
+				<input class="input-date" type="date" name="EDate" id="EDate" value="" min="<%= sdf.format(nowTime) %>">
 			</div>
 		</div>
-		<div class="div_title col-2">
+  		<div class="region div_title col-2">
 			<jsp:include page="travel/region.jsp" flush="false" />
 		</div>
 		<div class="div_title col-1">
@@ -74,6 +78,7 @@
 <!-- 			<button class="travel-title_close" onclick="if(confirm('그만 만드시겠어요?')) history.back(); else alert('닫기 취소')">닫기</button> -->
 			<button class="travel-title_close" onclick="if(confirm('그만 만드시겠어요?')) location.href='/app/main'; else alert('닫기 취소')">닫기</button>
 		</div>
+		</form>
 	</div>
 </div>
 <!-- header - tramvelForm 끝 -->
@@ -167,6 +172,12 @@
 		  
 	    </div>
 <!-- 검색 끝 -->
+		<div>
+			<form action="" id="savePlan">
+				<input type="hidden" class="hidden_input">
+			</form>
+		</div>
+		
 		<div class="b-example-divider b-example-vr"></div>
 		
 <!-- 지도 -->
