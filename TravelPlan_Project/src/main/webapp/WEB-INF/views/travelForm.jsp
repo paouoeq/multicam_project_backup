@@ -67,44 +67,19 @@
 			</div>
 		</div>
 		<div class="div_title col-2">
-			<select name="area" class="select" aria-label="Default select example">
-				<option value="1">서울</option>
-				<option value="2">인천</option>
-				<option value="3">대전</option>
-				<option value="4">대구</option>
-				<option value="5">광주</option>				
-				<option value="6">부산</option>				
-				<option value="7">울산</option>				
-				<option value="8">세종</option>				
-				<option value="31">경기</option>				
-				<option value="32">강원</option>				
-			</select>
+			<jsp:include page="travel/region.jsp" flush="false" />
 		</div>
 		<div class="div_title col-1">
 			<button class="travel-title_submit" onclick="save()">저장</button>
-			<button class="travel-title_close" onclick="if(confirm('그만 만드시겠어요?')) history.back(); else alert('닫기 취소')">닫기</button>
+<!-- 			<button class="travel-title_close" onclick="if(confirm('그만 만드시겠어요?')) history.back(); else alert('닫기 취소')">닫기</button> -->
+			<button class="travel-title_close" onclick="if(confirm('그만 만드시겠어요?')) location.href='/app/main'; else alert('닫기 취소')">닫기</button>
 		</div>
 	</div>
 </div>
 <!-- header - tramvelForm 끝 -->
 	
 	
-	<%-- <!-- 일정 만들기 맛집 리스트 -->
-	<div>
-		<ul class="plan-searchbox-ul">
-			<c:forEach var="foodList" items="${foodList }">
-				<li class="item" onmouseover="this.style.background='#F1F1F1'" onmouseout="this.style.background=''">
-					<img src="${foodList.image2 }" class="tourListImg" width="110px" height="86px">
-					<div class="info">
-						<h5 class="item-name">${foodList.title }</h5>
-						<span class="item-addr">${foodList.addr1 }</span>
-					</div>
-					<!-- 일정 추가하기 버튼 -->
-				</li>
-			</c:forEach>
-		</ul>
-	</div> --%>
-
+	
 <!-- content -->
 <div id='wrapper' style="height: 100%">
 	<main class="d-flex flex-nowrap" style="height: 100%">
@@ -170,9 +145,9 @@
 		  <div id="menu_wrap">
 		      <div class="d-flex align-items-center flex-shrink-0 p-1 border-bottom justify-content-center row">
 		        <div class="row">
-		          <button class="col m-1 small btn btn-light">숙박</button>
-		          <button class="col m-1 small btn btn-light">음식</button>
-		          <button class="col m-1 small btn btn-light">관광</button>
+		          <button class="col m-1 small btn btn-light" onclick="hotelBtnclick()">숙박</button>
+		          <button class="col m-1 small btn btn-light" onclick="foodBtnclick()">음식</button>
+		          <button class="col m-1 small btn btn-light" onclick="sightseeingBtnclick()">관광</button>
 		        </div>
 		        <div class="row">
 		          <form onsubmit="searchPlaces(); return false;">

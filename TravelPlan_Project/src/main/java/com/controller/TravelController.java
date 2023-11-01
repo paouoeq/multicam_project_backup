@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.dto.ApiDTO2;
+import com.dto.MemberDTO;
 import com.info.Info;
 import com.service.ApiService;
 import com.service.TravelService;
@@ -41,7 +42,12 @@ public class TravelController {
 		return "travelForm";
 	}
 	
-	// 데이터 삽입
+	// 일정 만들기
+	@GetMapping("/loginCheck/pickLocation")
+	public String pickLocation() {
+		
+		return "pickLocation";
+	}
 	
 	
 	// tourAPI json형식으로 jsp로 보냄
@@ -86,6 +92,85 @@ public class TravelController {
 	public List<ApiDTO2> scheduleList(@RequestParam HashMap<String, String> map) {
 		List<ApiDTO2> list = apiService.findSpot(map);
 		
+		return list;
+	}
+	
+	// 숙박/음식 버튼
+	@GetMapping("/searchBtn")
+	@ResponseBody
+	public List<ApiDTO2> searchBtn(@RequestParam("region") String region, @RequestParam("contentTypeid") String contentTypeid) {
+		int areaCode = 0;
+		if(region.equals("seoul")) {
+			areaCode = 1;
+		}
+		else if (region.equals("incheon")) {
+			areaCode = 2;
+		}
+		else if (region.equals("daejeon")) {
+			areaCode = 3;
+		}
+		else if (region.equals("daegu")) {
+			areaCode = 4;
+		}
+		else if (region.equals("gwangju")) {
+			areaCode = 5;
+		}
+		else if (region.equals("busan")) {
+			areaCode = 6;
+		}
+		else if (region.equals("ulsan")) {
+			areaCode = 7;
+		}
+		else if (region.equals("gangwon")) {
+			areaCode = 32;
+		}
+		else if (region.equals("jeju")) {
+			areaCode = 39;
+		}
+		HashMap<String,Object> map = new HashMap<String, Object>();
+		map.put("areaCode", areaCode);
+		map.put("contentTypeid", contentTypeid);
+		
+		List<ApiDTO2> list = apiService.findHotelandFood(map);
+		return list;
+	}
+	
+	// 관광 버튼
+	@GetMapping("/searchBtn2")
+	@ResponseBody
+	public List<ApiDTO2> searchBtn2(@RequestParam("region") String region, @RequestParam HashMap<String, Object> map) {
+		map.remove("region");
+		int areaCode = 0;
+		if(region.equals("seoul")) {
+			areaCode = 1;
+		}
+		else if (region.equals("incheon")) {
+			areaCode = 2;
+		}
+		else if (region.equals("daejeon")) {
+			areaCode = 3;
+		}
+		else if (region.equals("daegu")) {
+			areaCode = 4;
+		}
+		else if (region.equals("gwangju")) {
+			areaCode = 5;
+		}
+		else if (region.equals("busan")) {
+			areaCode = 6;
+		}
+		else if (region.equals("ulsan")) {
+			areaCode = 7;
+		}
+		else if (region.equals("gangwon")) {
+			areaCode = 32;
+		}
+		else if (region.equals("jeju")) {
+			areaCode = 39;
+		}
+		
+		map.put("areaCode", areaCode);
+		List<ApiDTO2> list = apiService.findSightseeing(map);
 		return list;
 	}
 	
