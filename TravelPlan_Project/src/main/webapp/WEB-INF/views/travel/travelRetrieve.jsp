@@ -2,15 +2,17 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ page import="java.util.List" %>
+<%@ page import="com.dto.PlanDTO" %>
+
 <!DOCTYPE html>
-<html>
+<html style="height: 100%">
 <head>
 	<meta charset="utf-8">
 	    <title>Travel Details</title>
 	    
 	<!-- ------------------------------------------------------------------------------------------------------------- -->
 	<!-- kakao Map API -->
-	<!-- ${client_id}가 맞나?????? 추후 수정하기 -->
     <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=${client_id}&libraries=services"></script>
 	
 	<!-- 부트스트랩 코드 넣기 -->
@@ -30,31 +32,83 @@
 	
 	<!-- day 버튼 이벤트-->
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        // JavaScript로 클릭 이벤트를 처리
-        $(document).ready(function () {
-            // 버튼을 클릭하면 해당 day_num에 해당하는 아이템을 출력
-            $("#day").click(function () {
-            	var dayNum = parseInt($("#dayNumInput").val());
-                var item = $("#planDTO_item").text(); // 해당 아이템 값 가져오기
+    
+    <style>
+    .plan-days {
+    background-color: #B7E1F5;
+    border: none;
+    cursor: pointer;
+    padding: 25px 0;
+    font-size: 22px;
+    border-bottom: 1px solid white;
+    width: 100%;
+    margin-bottom: 0px;
+    color: #0c3b54;
+    font-family: 'SUIT-Bold';
+}
 
-                // item목록 가져오기
-                var itemList = fetchItemList(item);
-                
-                
-               
-                }
-            });
-        });
-    </script>
+    </style>
+    
+    <script>
+
+    
+   $(function(){
+ 
+ var obj = {};
+    <c:forEach items="${planList}" var="plan" varStatus="status">
+    
+        if(!obj["${plan.day_num}"]){
+            obj["${plan.day_num}"] = [];
+        }
+        obj["${plan.day_num}"].push({
+            item: "${plan.item}",
+            item_add: "${plan.item_add}",
+            time: "${plan.time}",
+            time: "${plan.time}",
+            mapy: "${plan.mapy}",
+            idx: "${plan.idx}",
+        })
+    </c:forEach>
+
+    var days = '';
+    
+    Object.keys(obj).forEach(function(e){
+    	 //TODO: html 수정  
+        days += '<button class="btn btn-primary plan-days" data-day='+e+'>DAY '+e+'</button>';
+    });
+
+    $('#test-days tbody').html(days);
+    
+    $(".plan-days").on("click", function(){
+    	var day = $(this).data("day");
+    	var planList = obj[day];
+    	
+    	$("#test-plan-item").empty();
+    	
+    	planList.forEach(function(plan){	
+		    
+    		// TODO html 수정
+		    var html = ' <a href="#" class="list-group-item list-group-item-action py-3 lh-sm" aria-current="true">';
+		    html+='<div class="d-flex w-100 align-items-center justify-content-between">';
+		    html+=' <p> <strong class="mb-1">'+plan.item+'</strong> </p>';
+		    html+='<small class="text-body-secondary">'+plan.time+'</small>';
+		    html+='</div>';
+		    html+='<div class="col-10 mb-1 small">'+plan.item_add+'</div>';
+		    html+='</a>';
 	
-	
-	
-	
-	
+    		$("#test-plan-item").append(html);
+    	});
+    	
+    })
+   
+console.log(obj);
+
+   });
+
+	</script>
 	
 </head>
-<body>
+<body style="height: 100%">
 
 <!-- ------------------------------------------------------------------------------------------------------------- -->	    
 <!-- header - travelForm -->
@@ -81,19 +135,13 @@
 <!-- header - tramvelForm 끝 -->
 <!-- ------------------------------------------------------------------------------------------------------------- -->		
 <!-- content -->
-<div id='wrapper'>
-	<main class="d-flex flex-nowrap">
+<div id='wrapper' style="height: 100%">
+	<main class="d-flex flex-nowrap" style="height: 100%">
 	<!-- DAYS box : 유저가 저장한 만큼 나오게 수정하기 / day마다 클릭하면 저장된 세부일정 나오게 수정하기 -->
-	<div class="d-flex flex-column flex-shrink-0 bg-body-tertiary" style="width: 120px;">
+	<div class="d-flex flex-column flex-shrink-0 bg-body-tertiary" style="width: 140px;">
 		<div class="plan-daysbox nav nav-pills nav-flush flex-column mb-auto text-center">
 			<div class="plan-daysboxtitle">일정</div>
-			
-			<!-- 유저가 저장한 만큼 day 버튼 나오게 하려고 했는데 안나옴 -->
-			<%-- <c:forEach var="planDTO" items="${planDTO}"> --%>		
-		    	<button id="day" class="btn btn-primary">${planDTO.day_num}</button>
-			<%-- </c:forEach> --%>
-			
-				<div class="select-job-items1 nav-item">
+				<div id="test-days" class="select-job-items1 nav-item">
 					<div style="text-align: -webkit-center;">
 						<table id="myTable" class="table">
 							<thead>
@@ -102,9 +150,7 @@
 						</table>
 					</div>
 				</div>
-	
 			<input type="hidden" id="day_hidden" value="0">
-	
 		</div>
 	</div>
 	<div class="b-example-divider b-example-vr"></div>
@@ -119,24 +165,14 @@
 		  </div>
 		  
 		  <!-- 세부 일정 : c:foreach 사용하기  : 일정만들기 토대로 추후 다시 수정 / 일정마다 누르면 지도 표시되게 수정하기 -->
-		  <div class="list-group list-group-flush border-bottom scrollarea">
-		
+		  <div id="test-plan-item" class="list-group list-group-flush border-bottom scrollarea">
 		    <a href="#" class="list-group-item list-group-item-action py-3 lh-sm" aria-current="true">
 		      <div class="d-flex w-100 align-items-center justify-content-between">
-		       <p> <strong class="mb-1">${planDTO.item} </strong> </p>
-		        <small class="text-body-secondary">Mon</small>
+		       <p> <strong class="mb-1">${planDTO.item}</strong> </p>
+		        <small class="text-body-secondary">${planDTO.time}</small>
 		      </div>
-		      <div class="col-10 mb-1 small">존맛탱</div>
+		      <div class="col-10 mb-1 small">${planDTO.item_add}</div>
 		    </a>
-		
-		    <!-- <a href="#" class="list-group-item list-group-item-action py-3 lh-sm">
-		      <div class="d-flex w-100 align-items-center justify-content-between">
-		        <strong class="mb-1">진옥화할매원조닭한마리 본점</strong>
-		        <small class="text-body-secondary">Tues</small>
-		      </div>
-		      <div class="col-10 mb-1 small">서울 종로구 종로40가길 18</div>
-		    </a> -->
-		
 		  </div>
 		</div>
 
@@ -147,7 +183,7 @@
 		<div class="d-flex flex-column align-items-stretch flex-shrink-0 bg-body-tertiary" style="width: 78%;">
 			<!-- 지도API -->
 			<div id="map" style="width:100%;height:100%;"></div>
-			<script src="js/kakaoMap.js"></script>
+			<script src="../js/kakaoMap2.js"></script>
 	    </div>
 	<!-- 지도 끝 -->		
 		

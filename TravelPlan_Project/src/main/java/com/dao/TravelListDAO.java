@@ -36,13 +36,6 @@ public class TravelListDAO {
 		int totalCount = session.selectOne("TravelMapper.totalCount", userID);  //사용자 별 전체 레코드 갯수
 		pageDTO2.setTotalCount(totalCount);  //전체 레코드 갯수 저장
 		
-		//테스트 코드
-		//TODO 지우기
-		System.out.println("DAO offset:"+offset+"limit:"+limit);
-		for(TravelListDTO dto : list) {
-			System.out.println(dto);
-		}
-		
 		return pageDTO2;
 	}
 	
@@ -51,8 +44,8 @@ public class TravelListDAO {
 		return session.selectOne("TravelMapper.travelRetrieve", travelID);
 	}
 	
-	public PlanDTO planRetrieve(int travelID) {
-		return session.selectOne("TravelMapper.planRetrieve", travelID);
+	public List<PlanDTO> planList(int travelID) {
+		return session.selectList("TravelMapper.planRetrieve", travelID);
 	}
 	
 	// 일정 삭제하기
