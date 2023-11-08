@@ -145,7 +145,7 @@ public class MyPageController {
 //			int result = service.checkPw(dto);
 			MemberDTO loginInfo = (MemberDTO) session.getAttribute("loginInfo");
 			HashMap<String, String> map = new HashMap<String,String>();
-	    	map.put("userID", loginInfo.getUserID()); // 로그중인 id값
+	    	map.put("userID", loginInfo.getUserID()); // 로그인 하고있는 id값
 	    	map.put("inputPw", dto.getPasswd()); // 입력한 비밀번호
 	    	
 			int result = 0;
