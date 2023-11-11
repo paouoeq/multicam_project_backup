@@ -1,18 +1,21 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <!DOCTYPE html>
 <html>
 <head>
+<!-- jquery CDN -->   
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>   
 <meta charset="UTF-8">
 <title>게시판 자세히 보기</title>
 <!-- 합쳐지고 최소화된 최신 CSS -->
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+<!-- <link rel="stylesheet" -->
+<!-- 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css"> -->
 <!-- 부가적인 테마 -->
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+<!-- <link rel="stylesheet" -->
+<!-- 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css"> -->
 <!-- 합쳐지고 최소화된 최신 자바스크립트 -->
-
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
 
 
 <style>
@@ -123,10 +126,19 @@
 	    display: none;
 		}
 		
+		#mainText {
+	    	font-family: 'SUIT-Medium';
+		    width: 100%;
+ 		    height: 10px;
+		    border: none;
+		    resize: none;
+		}
+		
 		
 </style>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+
 
 
 
@@ -198,24 +210,49 @@
 	//테이블 클래스에서 버튼을 누르면 테이블 접었다 폈다하는 함수
 	//요청을 보내지 않는데 이 함수 실행시키면 토글을 한 뒤 요청이 감. f(${empty comment})
 	
-	function tableToggle(){
+	function tableToggle(){	
 		console.log('버튼 눌림')
+		
 		$("#TravelTable").toggle();
+		
+		var toggleBtnValue = $("#toggleBtn").val();
+
+	    if(toggleBtnValue === "일정 펼쳐보기"){
+	    	$("#toggleBtn").val("일정 접기");
+	        console.log("ToggleBtn의 값은 일정 펼쳐보기 입니다.");
+	    }else{
+	    	$("#toggleBtn").val("일정 펼쳐보기");
+	    }
+		
+		
+		
 	}
 	
 	
-	$(document).ready(
-			function(){
-			    // comment가 비어있을 때
-			    if(${emptyplan}){
-			        $("#toggleBtn").addClass("hidden"); // 버튼을 숨깁니다.
-			    }
-			    
-			    if(${emptyplan}){
-			        $("#TravelTable").addClass("hidden"); // 버튼을 숨깁니다.
-			    }
-			}
-		);
+	
+	//window.onload = document.getElementById("toggleBtn").addEventListener("click", tableToggle); 
+	window.onload = function(){ 
+		const button = document.getElementById("toggleBtn");
+		
+		const buttonClickHandler = () =>{
+		  //alert('Button clicked!');
+		  tableToggle()
+		  
+		};
+		 
+		button.onclick = buttonClickHandler;
+	};
+	
+	
+	// 내용 높이만큼 textarea 높이 설정
+	$(document).ready(function(){
+		var ta = document.querySelector('#mainText');
+// 		ta.style.height = 'auto';
+		var height = ta.scrollHeight;
+		console.log(height);
+// 		ta.style.height = `${height + 8}px`;
+		ta.style.height = height+'px';
+	});
 	
 	
 </script>
@@ -265,7 +302,7 @@
 				</div>	
 			
 			</div>
-			<div class="form-group">
+			<div class="form-group mb-4">
 				<!-- <label for="content" class="col-sm-2 control-label">내용</label>  -->
 				<div class="col-sm-12">
 					<!-- col 1이  생각보다 크다. // id TravelTable -->
@@ -284,27 +321,39 @@
 					
 					 
 					
+					<!-- PlanDto2dList 안의 리스트 PlanDto2dList_e -->
+					<!-- PlanDto2dList_e 안의 요소들 planDTO -->
 					
 					<table class="table testTable" id="TravelTable">
 						<tbody>
-							 <c:forEach begin="1" end="1" step="1" varStatus="loop">
+							 <c:forEach items="${PlanDto2dLists}" var = "PlanDtoLists"  varStatus="loop" >
 							 <!--  2중 포문 형태여야함, 겉 n일차, 안 n일차의 일정들-->
 								<tr class = "single-day"><!-- 이 tr 하나가 하나의 일정-->
-									<td class = "date-cell bold-text" style="text-align: center; background-color: #3563E9; color:white;">${loop.index} 일차</td>
+									<td class = "date-cell bold-text" style="text-align: center; background-color: #3563E9; color:white;">${loop.index +1 } 일차</td>
 									<td class="single-schedule"> <!-- 테이블 1, 하나의 세부일정, 이걸 반복. -->
-										<!-- comment 갖고 2중포문 구현하려면 에러남. -->
-										<c:forEach items="${plan}" var="plan">
+										
+										<c:forEach items="${PlanDtoLists}"  var="plan">	
+											<!-- <div>${PlanDto2dList_e}</div>  
+											"${fn : split( PlanDto2dList_e, ',' )}
+											<div>"${plan}"</div>
+											-->
+											
+											
+											
 											<div class="single-plan-container">
 												<table class="plan-cell">
 													<tr class="detail-info-head" >
 											          	<td  align="left">${plan.item}</td>
-														<td  align="right">${plan.item_add}</td>
+											          	
+														<td  align="right">${plan.time}</td>
 											        </tr>
 											        <tr class="detail-info-head">
 											        	<td align="left">${plan.item_add}</td>
 												    </tr>
 												</table> 
 											</div>
+											
+											
 										</c:forEach>	
 									</td>
 								</tr>
@@ -313,29 +362,38 @@
 					</table>
 					
 					
-					<span><input type="button" value="일정 펼쳐보기" class="btn btn-default btn-primary" id="toggleBtn" style="font-size: 12px;" onclick="tableToggle()">
+					<span><input type="button" value="일정 접기" class="btn btn-outline-primary" id='toggleBtn' style="font-size: 12px;">
 					</span>
+					<hr>
 					
-					<br></br>
-
-					
-					<textarea class="form-control" rows="10" name="content" id="mainText">${content.mainText}</textarea>
+					<textarea class="form-control" rows="10" name="content" id="mainText" style="resize: none;">${content.mainText}</textarea>
 				</div>
 				
 			</div>
-				
-			<div class="form-group" id="functionBtnGroup">
-				<div ><!-- class="col-sm-offset-1" -->
+				 
+			<div class="mb-1 d-grid gap-2 col-3 mx-auto" id="functionBtnGroup">
+			<!----------------------------------------------------------------- 혁민 ------------------------------------------------------------------>
+<!-- 				<div >class="col-sm-offset-1" -->
 					<!-- class="col-sm-offset-2 col-sm-10"
 					<input type="button" value="글수정" class="btn btn-default col-sm-1" onclick="go_update()"> 
 					<input type="button" value="목록" class="btn btn-default col-sm-1" onclick="go_list()">
 					 -->
-				</div>
-				<span><input type="button" value="좋아요(찜)하기" class=" btn-default btn-primary col-sm-2 btn col-sm-offset-5" style="font-size: 12px;" onclick="like()" ></span>
-				<span><input type="button" value="글수정" class="btn btn-default btn-primary col-sm-1 btn col-sm-offset-3" style="font-size: 12px;" onclick="go_update()"></span>
-				<span><input type="button" value="목록" class="btn btn-default btn-primary col-sm-1" style="font-size: 12px;" onclick="go_list()"></span>
-				
+<!-- 				</div> -->
+<!-- 				<span><input type="button" value="좋아요(찜)하기" class=" btn-default btn-primary col-sm-2 btn col-sm-offset-5" style="font-size: 12px;" onclick="like()" ></span> -->
+<!-- 				<span><input type="button" value="글수정" class="btn btn-default btn-primary col-sm-1 btn col-sm-offset-3" style="font-size: 12px;" onclick="go_update()"></span> -->
+<!-- 				<span><input type="button" value="목록" class="btn btn-default btn-primary col-sm-1" style="font-size: 12px;" onclick="go_list()"></span> -->
+			<!---------------------------------------------------------------------------------------------------------------------------------------->
+			<!------------------------------------------------------------------ 설아 수정 --------------------------------------------------------------->
+<!-- 				<button class="btn btn-outline-danger" style="font-size: 12px;" onclick="like()">좋아요(찜)하기</button> -->
+				<input type="button" value="좋아요(찜)하기" class="btn btn-outline-danger" style="font-size: 12px;" onclick="like()">
 			</div>
+			<div class="mb-4 d-grid gap-2 d-md-flex justify-content-md-end">
+<!-- 				<button class="btn btn-primary" style="font-size: 12px;" onclick="go_update()">글수정</button> -->
+<!-- 				<button class="btn btn-secondary" style="font-size: 12px;" onclick="go_list()">목록</button> -->
+				<input type="button" value="글수정" class="btn btn-primary" style="font-size: 12px;" onclick="go_update()">
+				<input type="button" value="목록" class="btn btn-secondary" style="font-size: 12px;" onclick="go_list()">
+			</div>
+			<!---------------------------------------------------------------------------------------------------------------------------------------->
 		</form>
 				
 		
@@ -378,7 +436,7 @@
 						<textarea  rows="4" cols="100" class="form-control col-sm-3" id="comment" name="comment" placeholder='타인을 배려하는 댓글을 작성해 주세요' required></textarea>
 					</div>
 				</div>
-				<div class="col-sm-offset-11 col-sm-5 ">
+				<div class="d-grid gap-2 d-md-flex justify-content-md-end">
 					<input type="button" class="btn btn-default btn-primary" id="writeComment" onclick ="go_insert()" style="font-size: 12px;" value="댓글작성">
 					<!-- class right-button -->
 				</div>
